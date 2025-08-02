@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recall.ai Sample App</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form id="simpleForm">
+        <div class="heading">
+          <div class="title">Zoom Bot Demo</div>
+          <div class="logo"></div>
+        </div>
+        <input
+          type="text"
+          id="userInput"
+          name="userInput"
+          placeholder="Add Zoom URL"
+          required
+        />
+        <button type="submit">Invite Bot</button>
+        <div class="message" id="message"></div>
+      </form>
+    </div>
+
+    <div id="transcript-container" style="display: none">
+      <div class="transcript-header">
+        <h2>Live Transcript</h2>
+        <div id="transcript-status"></div>
+      </div>
+      <div id="transcript-output"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("simpleForm");
+      const responseEl = document.getElementById("message");
+      const mainContainer = document.querySelector(".container");
+      const transcriptContainer = document.getElementById(
+        "transcript-container"
+      );
+      const transcriptOutput = document.getElementById("transcript-output");
+      const transcriptStatus = document.getElementById("transcript-status");
+      let pollingInterval;
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userInput = document.getElementById("userInput").value;
+        responseEl.textContent = "Inviting bot...";
+        responseEl.style.color = "black";
+        responseEl.style.display = "block";
+
+        try {
+          const response = await fetch("/api/invite_bot", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ meetingUrl: userInput }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            mainContainer.style.display = "none";
+            transcriptContainer.style.display = "flex";
+            transcriptStatus.textContent = `Bot ID: ${data.botId}`;
+            startPolling(data.botId);
+          } else {
+            responseEl.textContent = `Error: ${data.error || "Unknown error"}`;
+          }
+        } catch (error) {
+          console.error("Network error:", error);
+          responseEl.textContent = `Network error: ${error.message}`;
+        }
+      });
+
+      function startPolling(botId) {
+        if (pollingInterval) clearInterval(pollingInterval);
+
+        pollingInterval = setInterval(async () => {
+          try {
+            const res = await fetch(`/api/transcript/${botId}`);
+            const transcript = await res.json();
+            renderTranscript(transcript);
+          } catch (err) {
+            console.error("Error fetching transcript:", err);
+          }
+        }, 3000);
+      }
+
+      function renderTranscript(transcript) {
+        transcriptOutput.innerHTML = ""; // Clear previous content
+        transcript.forEach((chunk) => {
+          const line = document.createElement("div");
+          line.className = "transcript-line";
+
+          const speaker = document.createElement("span");
+          speaker.className = "speaker";
+          speaker.textContent = `${chunk.speaker}:`;
+
+          const text = document.createElement("span");
+          text.className = "text";
+          text.textContent = chunk.text;
+
+          const time = document.createElement("span");
+          time.className = "time";
+          time.textContent = `[${chunk.time.toFixed(2)}s]`;
+
+          line.appendChild(speaker);
+          line.appendChild(text);
+          transcriptOutput.appendChild(line);
+        });
+        // Scroll to the bottom
+        transcriptOutput.scrollTop = transcriptOutput.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
