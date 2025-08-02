@@ -4,6 +4,9 @@ This repo is a demonstration of how to build a simple Zoom bot that joins and tr
 
 If you want to see a deeper dive into how I built this, check out this post on the Recall.ai blog: ...
 
+## Demo
+https://www.loom.com/share/ab898f02a5344fdbb89fdd4701bbaf10
+
 ## Requirements
 
 - [Docker](https://docs.docker.com/get-docker/) must be installed and running.
