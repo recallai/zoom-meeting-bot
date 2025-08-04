@@ -7,6 +7,9 @@ If you want to see a deeper dive into how I built this, check out this post on t
 ## Demo
 https://www.loom.com/share/ab898f02a5344fdbb89fdd4701bbaf10
 
+## Hosted API
+If you want to use a hosted API that allows you to access conversation data from meetings instead of building and hosting your own bot, check out [recall.ai](https://www.recall.ai?utm_source=github&utm_medium=sampleapp&utm_campaign=zoom-bot-from-scratch).
+
 ## Requirements
 
 - [Docker](https://docs.docker.com/get-docker/) must be installed and running.
