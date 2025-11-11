@@ -2,13 +2,13 @@
 
 This repo is a demonstration of how to build a simple Zoom bot that joins and transcribes meetings in real time.
 
-If you want to see a deeper dive into how I built this, check out this post on the Recall.ai blog: ...
+If you want to see a deeper dive into how I built this, check out the post on how to build a [Zoom bot](https://www.recall.ai/blog/how-to-build-a-zoom-bot).
 
 ## Demo
 https://www.loom.com/share/ab898f02a5344fdbb89fdd4701bbaf10
 
-## Hosted API
-If you want to use a hosted API that allows you to access conversation data from meetings instead of building and hosting your own bot, check out [recall.ai](https://www.recall.ai?utm_source=github&utm_medium=sampleapp&utm_campaign=zoom-bot-from-scratch).
+## Hosted Zoom Meeting Bot API
+If you want to use a hosted API that allows you to access conversation data from meetings instead of building and hosting your own bot, check out [Recall.ai's Meeting Bot API for Zoom](https://www.recall.ai/product/meeting-bot-api/zoom?utm_source=github&utm_medium=sampleapp&utm_campaign=zoom-bot-from-scratch).
 
 ## Requirements
 
